@@ -2,35 +2,49 @@ import { FC } from 'react';
 
 import Player from '@/components/game/Player.tsx';
 import SokoBanMap from '@/components/game/SokoBanMap.tsx';
-import Cargo from '@/components/game/Cargo.tsx';
+import { playerMove, usePlayerPositionStore } from '@/store/player.ts';
+import { useCargoPositionStore } from '@/store/cargo.ts';
+import { Cargos } from '@/components/game/Cargo.tsx';
+
+// todo 请教 , 如何添加全局的事件监听
+Move();
 
 const Game: FC = () => {
+    const playerPosition = usePlayerPositionStore((state) => state);
+    console.log(playerPosition);
+    const cargoPosition = useCargoPositionStore((state) => state);
+    // const point2 = { x: 111, y: 111 };
     return (
         <>
-            <Player position={{ x: 100, y: 100 }} />
-            <Cargo position={{ x: 110, y: 110 }} />
+            <Player point={playerPosition} />
+            {/* <Cargo point={cargoPosition} /> */}
+            <Cargos points={cargoPosition} />
             <SokoBanMap />
         </>
     );
 };
-export function useMove() {
-    const { movePlayerToLeft, movePlayerToDown, movePlayerToRight, movePlayerToUp } = usePlayerStore();
 
-    window.addEventListener('keyup', (e: KeyboardEvent) => {
+export function Move() {
+    const handleKeyUp = (e: KeyboardEvent) => {
         switch (e.code) {
             case 'ArrowLeft':
-                movePlayerToLeft();
+                playerMove({ x: -1, y: 0 });
                 break;
             case 'ArrowRight':
-                movePlayerToRight();
+                playerMove({ x: 1, y: 0 });
                 break;
             case 'ArrowUp':
-                movePlayerToUp();
+                playerMove({ x: 0, y: -1 });
                 break;
             case 'ArrowDown':
-                movePlayerToDown();
+                playerMove({ x: 0, y: 1 });
+                break;
+            default:
                 break;
         }
-    });
+    };
+
+    window.addEventListener('keyup', handleKeyUp);
 }
+
 export default Game;

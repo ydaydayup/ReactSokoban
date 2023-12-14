@@ -1,16 +1,24 @@
 import { FC } from 'react';
 
-type Coordinate = {
-    x: number;
-    y: number;
-};
-const Cargo: FC<{ position: Coordinate }> = ({ position }: { position: Coordinate }) => {
+type CargoPosition = [number, number];
+
+const Cargo: FC<{ point: CargoPosition }> = ({ point }: { point: CargoPosition }) => {
     return (
         <img
-            style={{ left: position.x, top: position.y, position: 'absolute' }}
+            className="w-[32px] h-[32px]"
+            style={{ position: 'absolute', left: point[0], top: point[1] }}
             src="src/assets/images/game/cargo.png"
             alt=""
         />
     );
 };
-export default Cargo;
+const Cargos: FC<{ points: CargoPosition[] }> = ({ points }: { points: CargoPosition[] }) => {
+    return (
+        <>
+            {points.map((point) => (
+                <Cargo point={point} />
+            ))}
+        </>
+    );
+};
+export { Cargo, Cargos };

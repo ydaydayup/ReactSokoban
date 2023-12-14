@@ -1,18 +1,22 @@
 import { FC } from 'react';
-// 坐标
-type Coordinate = {
+
+type Point = {
     x: number;
     y: number;
 };
-const Player: FC<{ position: Coordinate }> = ({ position }: { position: Coordinate }) => {
+
+const Player: FC<{ point: Point }> = ({ point }: { point: Point }) => {
     return (
         <img
-            style={{ left: position.x, top: position.y, position: 'absolute' }}
+            className="w-[32px] h-[32px]"
+            style={{
+                position: 'absolute',
+                left: point.x,
+                top: point.y,
+            }}
             src="src/assets/images/game/keeper.png"
             alt=""
         />
     );
 };
-
-
 export default Player;
